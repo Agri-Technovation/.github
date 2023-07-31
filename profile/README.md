@@ -12,5 +12,6 @@
 
 Projects formatting:
 
+The Itecho team uses Jetbrains Rider. Rider has buildin code formatter. To add exactly the same settings for the formatte to each team member computer, have a look at [Repository-Formatting](https://github.com/Agri-Technovation/Repository-Formatting)
 
 
