@@ -14,11 +14,11 @@ Welcome to Agri-Technovation, a company dedicated to empowering the agriculture 
 
 ## Projects formatting:
 
-Code formatting is done ESlint and Dotnet format. This will style the code everytime the user saves a file.
+Code formatting is done ESlint and Dotnet format. This will style the code usually the user saves a file, ensuring that the good coding practice is followed by all developers.
 
-### How to add eslint to a project:
+### How to add eslint to a new project:
 
-Navigate to the folder where you can find the yarn.lock and the tsconfig.json files. This is usualy in the ClientApp folder.
+Navigate to the folder where you can find the yarn.lock and the tsconfig.json files. This is usually in the ClientApp folder.
 ```shx
 npm init @eslint/config
 
@@ -88,12 +88,12 @@ Add the following line in .eslintrc.json under "parserOptions"
 "project": ["**/tsconfig.json"]
 ```
 
-The linter can be run by executing the follow commmand.
+The linter can be run by executing the follow command.
 ```sh
 yarn eslint
 ```
 
-## Add eslint to your IDE
+### Add eslint to your IDE:
 
 Download ESLint extensions in the VS code marketplace and add the following code to settings.json
 
@@ -111,10 +111,28 @@ Download ESLint extensions in the VS code marketplace and add the following code
 ```
 For jetbrains rider you need to install the plugin for eslint and configure the settings to format on save.
 
+### How to add Dotnet format to a new project:
 
+The first step is to download dotnet format globally on you computer. This can be done by running the following command:
+```sh
+dotnet tool install -g dotnet-format
+```
 
+Add a file called ".editorconfig" in the root of the project. This file will contain all configurations for the formatting for the c# code. refer to [itest-leaf's .editorconfig](https://github.com/Agri-Technovation/itest-leaf) as an example on how it should look.
 
+### Add Dotnet format to your IDE:
 
+For Visual studio code you need to add the following to settings.json
 
-Thank you for joining us on this exciting journey as we continue to revolutionize agriculture through technology and data-driven solutions. We are committed to enhancing farm productivity, sustainability, and empowering farmers with the knowledge they need to thrive. 
+```sh
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.format": ["dotnet-format.formatDocument"]
+  }
+}
+```
+For jetbrains rider you just need to go into system preferences and select on save for the editorcofig.
+
+Thank you for joining us on this exciting journey as we continue to revolutionise agriculture through technology and data-driven solutions. We are committed to enhancing farm productivity, sustainability, and empowering farmers with the knowledge they need to thrive. 
 
