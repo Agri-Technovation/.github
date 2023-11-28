@@ -134,5 +134,29 @@ For Visual studio code you need to add the following to settings.json
 ```
 For jetbrains rider you just need to go into system preferences and select on save for the editorcofig.
 
+## Sonarcloud:
+
+SonarCloud serves as a robust code scanning tool designed to identify code smells, bugs, vulnerabilities, and security hotspots within your project. Upon integrating a repository into SonarCloud, it conducts an initial comprehensive scan of the entire project, providing valuable feedback on the overall code quality. Our configuration ensures that SonarCloud runs seamlessly on every pull request made to the main/master branch, with a focus on analyzing only the modified code. This tailored approach enhances efficiency by pinpointing potential issues in the specific areas that underwent changes. 
+
+### Adding a new project to sonarcloud:
+
+Go to analize new project, select the Repo that you want to add to SonarCloud and click on setup:
+
+<img width="1178" alt="image" src="https://github.com/Agri-Technovation/.github/assets/62010068/3e7baab1-9c97-4375-99b8-5be9acfd4901">
+
+The next step is to select the "Previous version" option and click on create project.
+
+<img width="1145" alt="image" src="https://github.com/Agri-Technovation/.github/assets/62010068/2faadebd-a853-402a-8b06-dfe2adddb990">
+
+Now the project is added to sonarcloud. The next step will be to add the workflow on github to run analisis on pull requests.
+
+### Adding workflow for sonarcloud
+
+
+
+
+
+
+
 Thank you for joining us on this exciting journey as we continue to revolutionise agriculture through technology and data-driven solutions. We are committed to enhancing farm productivity, sustainability, and empowering farmers with the knowledge they need to thrive. 
 
