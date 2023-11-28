@@ -134,11 +134,11 @@ For Visual studio code you need to add the following to settings.json
 ```
 For jetbrains rider you just need to go into system preferences and select on save for the editorcofig.
 
-## Sonarcloud:
+## SonarCloud:
 
-SonarCloud serves as a robust code scanning tool designed to identify code smells, bugs, vulnerabilities, and security hotspots within your project. Upon integrating a repository into SonarCloud, it conducts an initial comprehensive scan of the entire project, providing valuable feedback on the overall code quality. Our configuration ensures that SonarCloud runs seamlessly on every pull request made to the main/master branch, with a focus on analyzing only the modified code. This tailored approach enhances efficiency by pinpointing potential issues in the specific areas that underwent changes. 
+SonarCloud serves as a robust code scanning tool designed to identify code smells, bugs, vulnerabilities, and security hotspots within your project. Upon integrating a repository into SonarCloud, it conducts an initial comprehensive scan of the entire project, providing valuable feedback on the overall code quality. Our configuration ensures that SonarCloud runs seamlessly on every pull request made to the main/master branch, with a focus on analysing only the modified code. This tailored approach enhances efficiency by pinpointing potential issues in the specific areas that underwent changes. 
 
-### Adding a new project to sonarcloud:
+### Adding a new project to SonarCloud:
 
 Go to analize new project, select the Repo that you want to add to SonarCloud and click on setup:
 
@@ -148,14 +148,65 @@ The next step is to select the "Previous version" option and click on create pro
 
 <img width="1145" alt="image" src="https://github.com/Agri-Technovation/.github/assets/62010068/2faadebd-a853-402a-8b06-dfe2adddb990">
 
-Now the project is added to sonarcloud. The next step will be to add the workflow on github to run analisis on pull requests.
+Now the project is added to SonarCloud. The next step will be to add the workflow on GitHub to run analisis on pull requests.
 
-### Adding workflow for sonarcloud
+### Adding workflow for SonarCloud:
 
+The first step is to create a token on SonarCloud. You will find this under the securaty tab in your profile. You will need to add this token to your GitHub environment secrets of the repo. This seacret will be used in the work flow.
 
+Create a yml file containing the following:
+```sh
+name: SonarCloud
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: windows-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'adopt'
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          token: ${{ secrets.SUBMODULES_PAT }}
+          submodules: true
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v2
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v2
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONARCLOUD_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+        shell: powershell
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Agri-Technovation_Repo_Name" /o:"agri-technovation" /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations/**"
+          dotnet build Web
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}"
+```
 
-
-
+This workflow will now run when a pull request is made on the main branch.
 
 
 Thank you for joining us on this exciting journey as we continue to revolutionise agriculture through technology and data-driven solutions. We are committed to enhancing farm productivity, sustainability, and empowering farmers with the knowledge they need to thrive. 
